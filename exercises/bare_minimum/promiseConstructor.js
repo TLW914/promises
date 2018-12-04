@@ -23,6 +23,7 @@ var pluckFirstLineFromFileAsync = function(filePath) {
   //pass in whatever you put in to reject or resolve, e.g line = firstLine
   promise.then(function(line) {
     // give success message
+      //this is where we would define any success behavior
     console.log('SUCCESS! Payload: ' + line);
   }).catch(function(err) {
     console.log('Handled Promise Error: ' + err);
@@ -33,7 +34,22 @@ var pluckFirstLineFromFileAsync = function(filePath) {
 
 // This function should retrieve the status code of a GET request to `url`
 var getStatusCodeAsync = function(url) {
-  // TODO
+  var promise = new Promise(function(resolve, reject) {
+    request(url, function(err, response, body) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(response.statusCode);
+      }
+    });
+  });
+
+  promise.then(function(status) {
+    console.log('SUCCESS! Payload: ' + statuscode);
+  }).catch(function(err) {
+    console.log('Handled Promise Error: ' + err);
+  });
+  return promise;
 };
 
 // Export these functions so we can test them and reuse them in later exercises
@@ -41,3 +57,11 @@ module.exports = {
   getStatusCodeAsync: getStatusCodeAsync,
   pluckFirstLineFromFileAsync: pluckFirstLineFromFileAsync
 };
+
+// request(url, function(err, response, body) {
+//   if (err) {
+//     callback(err, response);
+//   } else {
+//     callback(null, response.statusCode);
+//   }
+// });
